@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """This file contains the Auth class"""
 from typing import List, TypeVar
-from flask import Request
+from flask import request
 
 
-class Auth():
+class Auth:
     """The Auth Class"""
 
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
