@@ -20,14 +20,24 @@ class Auth:
             abs_path = path[:-1]
         else:
             abs_path = path
+        # for url in excluded_paths:
+        #     if url.endswith("*/"):
+        #         extracted_path = url[:-2]
+        #         sub_path = abs_path[0: len(extracted_path)]
+        #         if sub_path == extracted_path:
+        #             return False
+        #     if url.endswith("*"):
+        #         extracted_path = url[:-1]
+        #         sub_path = abs_path[0: len(extracted_path)]
+        #         if sub_path == extracted_path:
+        #             return False
         for url in excluded_paths:
+            extracted_path = ""
             if url.endswith("*/"):
                 extracted_path = url[:-2]
-                sub_path = abs_path[0: len(extracted_path)]
-                if sub_path == extracted_path:
-                    return False
             if url.endswith("*"):
                 extracted_path = url[:-1]
+            if len(extracted_path) > 0:
                 sub_path = abs_path[0: len(extracted_path)]
                 if sub_path == extracted_path:
                     return False
