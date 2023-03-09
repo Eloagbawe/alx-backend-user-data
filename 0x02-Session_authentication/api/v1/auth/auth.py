@@ -2,6 +2,7 @@
 """This file contains the Auth class"""
 from typing import List, TypeVar
 from flask import request
+import os
 
 
 class Auth:
@@ -54,3 +55,10 @@ class Auth:
     def current_user(self, request=None) -> TypeVar('User'):
         """The current_user method"""
         return None
+
+    def session_cookie(self, request=None):
+        """This function returns a cookie value from a request"""
+        if request is None:
+            return None
+        session_id = os.getenv('SESSION_NAME')
+        return request.cookies.get(session_id)
