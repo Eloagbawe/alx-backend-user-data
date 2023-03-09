@@ -1,14 +1,23 @@
 #!/usr/bin/env python3
-"""This class contains the SessionDBAuth class"""
-from api.v1.auth.session_exp_auth import SessionExpAuth
+"""
+Define class SessionDButh
+"""
+from .session_exp_auth import SessionExpAuth
 from models.user_session import UserSession
 
 
 class SessionDBAuth(SessionExpAuth):
-    """The SessionDBAuth class"""
+    """
+    Definition of SessionDBAuth class that persists session data
+    in a database
+    """
 
     def create_session(self, user_id=None):
-        """The create_session class"""
+        """
+        Create a Session ID for a user_id
+        Args:
+           user_id (str): user id
+        """
         session_id = super().create_session(user_id)
         if not session_id:
             return None
