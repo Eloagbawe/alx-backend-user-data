@@ -31,3 +31,16 @@ def session_login():
     resp.set_cookie(os.getenv('SESSION_NAME'), user_session)
 
     return resp
+
+
+@app_views.route('/auth_session/logout', methods=['DELETE'],
+                 strict_slashes=False)
+def session_logout():
+    """
+    DELETE /api/v1/auth_session/logout
+    """
+    from api.v1.app import auth
+    delete_session = auth.destroy_session(request)
+    if delete_session:
+        return jsonify({}), 200
+    abort(404)
