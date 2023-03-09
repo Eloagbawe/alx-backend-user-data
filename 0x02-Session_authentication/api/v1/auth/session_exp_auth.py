@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
 """This file contains the SessionExpAuth class """
-from datetime import datetime, timedelta
-from api.v1.auth.session_auth import SessionAuth
+# from datetime import datetime, timedelta
+# from api.v1.auth.session_auth import SessionAuth
 import os
+from datetime import (
+    datetime,
+    timedelta
+)
+
+from .session_auth import SessionAuth
+
 
 
 class SessionExpAut(SessionAuth):
