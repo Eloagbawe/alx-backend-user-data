@@ -1,14 +1,8 @@
 #!/usr/bin/env python3
 """This file contains the SessionExpAuth class """
-# from datetime import datetime, timedelta
-# from api.v1.auth.session_auth import SessionAuth
+from datetime import datetime, timedelta
+from api.v1.auth.session_auth import SessionAuth
 import os
-from datetime import (
-    datetime,
-    timedelta
-)
-
-from .session_auth import SessionAuth
 
 
 
@@ -42,10 +36,10 @@ class SessionExpAut(SessionAuth):
         session_dict = self.user_id_by_session_id.get(session_id)
         if session_dict is None:
             return None
-        if self.session_duration <= 0:
-            return session_dict.get('user_id')
         if 'created_at' not in session_dict.keys():
             return None
+        if self.session_duration <= 0:
+            return session_dict.get('user_id')
         created_at = session_dict.get('created_at')
         duration = created_at + timedelta(seconds=self.session_duration)
 
