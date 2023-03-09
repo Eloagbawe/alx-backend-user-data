@@ -5,7 +5,6 @@ from api.v1.auth.session_auth import SessionAuth
 import os
 
 
-
 class SessionExpAut(SessionAuth):
     """The SessionExpAuth Class"""
 
