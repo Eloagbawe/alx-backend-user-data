@@ -6,10 +6,12 @@ import os
 
 
 class SessionExpAut(SessionAuth):
-    """The SessionExpAuth Class"""
+    """The SessionExpAuth Class
+    This class adds an expiration date to a Session ID
+    """
 
     def __init__(self):
-        """initialization"""
+        """initialization of the SessionExpAuth Class"""
         try:
             duration = int(os.getenv('SESSION_DURATION'))
         except Exception:
@@ -17,7 +19,9 @@ class SessionExpAut(SessionAuth):
         self.session_duration = duration
 
     def create_session(self, user_id=None):
-        """create_session"""
+        """create_session
+        Create a Session ID for a user_id
+        """
         session_id = super().create_session(user_id)
         if session_id is None:
             return None
@@ -29,7 +33,9 @@ class SessionExpAut(SessionAuth):
         return session_id
 
     def user_id_for_session_id(self, session_id=None):
-        """user_id_for_session_id"""
+        """user_id_for_session_id
+        Returns a user ID based on a session ID
+        """
         if session_id is None:
             return None
         session_dict = self.user_id_by_session_id.get(session_id)
