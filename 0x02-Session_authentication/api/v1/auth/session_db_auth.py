@@ -40,7 +40,7 @@ class SessionDBAuth(SessionExpAuth):
         """
         user_session = UserSession().search({"session_id": session_id})
         if len(user_session) > 0:
-            created_at = user_session[0].to_json().get('created_at')
+            created_at = user_session[0].created_at
             duration = created_at + timedelta(seconds=self.session_duration)
 
             if duration < datetime.now():
