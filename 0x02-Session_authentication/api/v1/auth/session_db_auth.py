@@ -2,7 +2,7 @@
 """
 Define class SessionDButh
 """
-from .session_exp_auth import SessionExpAuth
+from api.v1.auth.session_exp_auth import SessionExpAuth
 from models.user_session import UserSession
 
 
@@ -37,9 +37,9 @@ class SessionDBAuth(SessionExpAuth):
         Return:
             user id or None if session_id is None or not a string
         """
-        user_id = UserSession.search({"session_id": session_id})
-        if user_id:
-            return user_id
+        user_session = UserSession().search({"session_id": session_id})
+        if len(user_session) > 0:
+            return user_session[0].to_json().get('user_id')
         return None
 
     def destroy_session(self, request=None):
@@ -52,7 +52,7 @@ class SessionDBAuth(SessionExpAuth):
         session_id = self.session_cookie(request)
         if not session_id:
             return False
-        user_session = UserSession.search({"session_id": session_id})
+        user_session = UserSession().search({"session_id": session_id})
         if user_session:
             user_session[0].remove()
             return True
