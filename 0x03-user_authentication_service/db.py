@@ -58,10 +58,11 @@ class DB:
             user = self.find_user_by(id=user_id)
         except NoResultFound:
             raise ValueError
-        try:
-            for k, v in kw.items():
+
+        for k, v in kw.items():
+            if hasattr(User, k):
                 setattr(user, k, v)
-            self._session.commit()
-        except AttributeError:
-            raise ValueError
+            else:
+                raise ValueError
+        self._session.commit()
         return None
