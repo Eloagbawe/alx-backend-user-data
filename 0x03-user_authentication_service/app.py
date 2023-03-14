@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """This file contains tha main flask application"""
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, abort, Response
 from auth import Auth
 
 
@@ -27,6 +27,22 @@ def add_user() -> str:
                         "message": "user created"})
     except ValueError:
         return jsonify({"message": "email already registered"}), 400
+
+
+@app.route('/sessions', methods=['POST'], strict_slashes=False)
+def login() -> Response:
+    """POST /sessions"""
+    email = request.form.get('email')
+    password = request.form.get('password')
+    valid_login = AUTH.valid_login(email, password)
+
+    if valid_login:
+        session_id = AUTH.create_session(email)
+        res = jsonify({"email": "{}".format(email), "message": "logged in"})
+        res.set_cookie('session_id', session_id)
+        return res
+    else:
+        abort(401)
 
 
 if __name__ == "__main__":
