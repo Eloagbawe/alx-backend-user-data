@@ -72,13 +72,12 @@ def get_profile() -> Response:
 def get_reset_password_token() -> Response:
     """POST /reset_password"""
     email = request.form.get('email')
-    session_id = request.cookies.get('session_id')
-    user = AUTH.get_user_from_session_id(session_id)
-    if session_id is None or user is None:
+    try:
+        reset_token = AUTH.get_reset_password_token(email)
+        return jsonify({"email": "{}".format(email),
+                        "reset_token": "{}".format(reset_token)}), 200
+    except Exception:
         abort(403)
-    reset_token = AUTH.get_reset_password_token(email)
-    return jsonify({"email": "{}".format(user.email),
-                    "reset_token": "{}".format(reset_token)}), 200
 
 
 if __name__ == "__main__":
