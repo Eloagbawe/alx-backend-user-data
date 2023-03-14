@@ -69,7 +69,7 @@ def get_profile() -> Response:
 
 
 @app.route('/reset_password', methods=['POST'], strict_slashes=False)
-def reset_password() -> Response:
+def get_reset_password_token() -> Response:
     """POST /reset_password"""
     email = request.form.get('email')
     session_id = request.cookies.get('session_id')
