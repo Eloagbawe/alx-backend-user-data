@@ -54,13 +54,14 @@ class DB:
 
     def update_user(self, user_id: int, **kw) -> None:
         """The update_user method"""
-        user = self.find_user_by(id=user_id)
-        if user:
-            try:
-                for k, v in kw.items():
-                    setattr(user, k, v)
-                # user.update(kw)
-                self._session.commit()
-            except AttributeError:
-                raise ValueError
+        try:
+            user = self.find_user_by(id=user_id)
+        except NoResultFound:
+            raise ValueError
+        try:
+            for k, v in kw.items():
+                setattr(user, k, v)
+            self._session.commit()
+        except AttributeError:
+            raise ValueError
         return None
