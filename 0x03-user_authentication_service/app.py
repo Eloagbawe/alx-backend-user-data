@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """This file contains tha main flask application"""
 from flask import Flask, jsonify,\
-    request, abort, Response, redirect,\
-    url_for
+    request, abort, Response, redirect
 from auth import Auth
 
 
@@ -55,9 +54,11 @@ def logout() -> None:
         user = AUTH.get_user_from_session_id(session_id)
         if user:
             AUTH.destroy_session(user.id)
-            redirect(url_for('/'))
+            redirect('/', code=302)
         else:
             abort(403)
+    else:
+        abort(403)
 
 
 if __name__ == "__main__":
