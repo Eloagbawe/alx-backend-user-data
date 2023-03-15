@@ -7,7 +7,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from sqlalchemy.exc import InvalidRequestError
-# from sqlalchemy.exc import NoResultFound, InvalidRequestError
 from sqlalchemy.orm.exc import NoResultFound
 
 
@@ -60,7 +59,7 @@ class DB:
             raise ValueError
 
         for k, v in kw.items():
-            if hasattr(User, k):
+            if hasattr(user, k):
                 setattr(user, k, v)
             else:
                 raise ValueError
