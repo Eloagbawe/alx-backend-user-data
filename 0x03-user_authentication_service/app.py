@@ -9,53 +9,51 @@ app = Flask(__name__)
 AUTH = Auth()
 
 
-@app.route('/', methods=['GET'], strict_slashes=False)
-def home() -> str:
-    """ GET / home
-    """
-    return jsonify({"message": "Bienvenue"})
+@app.route("/", methods=['GET'], strict_slashes=False)
+def root():
+    """GET the root or home page"""
+    message = {"message": "Bienvenue"}
+    return jsonify(message)
 
 
-@app.route('/users', methods=['POST'], strict_slashes=False)
-def add_user() -> str:
-    """POST /users"""
+@app.route("/users", methods=['POST'], strict_slashes=False)
+def register():
+    """A method to register users"""
     email = request.form.get('email')
     password = request.form.get('password')
 
     try:
         user = AUTH.register_user(email, password)
-        return jsonify({"email": "{}".format(user.email),
-                        "message": "user created"})
+        return jsonify({"email": f"{user.email}", "message": "user created"})
     except ValueError:
         return jsonify({"message": "email already registered"}), 400
 
 
-@app.route("/sessions", methods=['POST'], strict_slashes=False)
-def login():
-    """Handles login sessions"""
+@app.route('/sessions', methods=['POST'], strict_slashes=False)
+def login() -> Response:
+    """POST /sessions"""
     email = request.form.get('email')
     password = request.form.get('password')
+    valid_login = AUTH.valid_login(email, password)
 
-    valid_user_login = AUTH.valid_login(email, password)
-
-    if valid_user_login:
+    if valid_login:
         session_id = AUTH.create_session(email)
-        response = jsonify({"email": f"{email}", "message": "logged in"})
-        response.set_cookie("session_id", session_id)
-        return response
+        res = jsonify({"email": "{}".format(email), "message": "logged in"})
+        res.set_cookie('session_id', session_id)
+        return res
+    else:
+        abort(401)
 
-    abort(401)
 
-
-@app.route("/sessions", methods=["DELETE"], strict_slashes=False)
-def logout():
-    """The logout method"""
+@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
+def logout() -> Response:
+    """DELETE /sessions"""
     session_id = request.cookies.get('session_id')
-    user = AUTH.get_user_from_session_id(session_id)
-    if user:
-        AUTH.destroy_session(user.id)
-        return redirect(url_for('home'))
-
+    if session_id:
+        user = AUTH.get_user_from_session_id(session_id)
+        if user:
+            AUTH.destroy_session(user.id)
+            return redirect('/', code=302)
     abort(403)
 
 
