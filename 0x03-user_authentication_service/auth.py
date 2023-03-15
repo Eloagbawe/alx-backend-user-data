@@ -4,7 +4,6 @@ This contains the Auth Class
 """
 from db import DB
 from user import User
-# from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm.exc import NoResultFound
 
 import bcrypt
@@ -97,6 +96,5 @@ class Auth:
             hashed_password = _hash_password(password).decode('utf-8')
             self._db.update_user(user.id, hashed_password=hashed_password,
                                  reset_token=None)
-            return None
         except NoResultFound:
             raise ValueError
